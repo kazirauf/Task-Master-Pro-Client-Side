@@ -15,6 +15,7 @@ const Register = () => {
              const password = form.get('password')
              console.log(name, email, password)
      
+           // eslint-disable-next-line no-useless-escape
            const specialCharactersRegex = /[!@#\$%\^\&*\)\(+=._-]/g;
 
            if (password.length < 6) {

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
-    const {signIn, signInWithProvider} = useAuth()
+    const {signIn, } = useAuth()
     const handleLogin = e => {
       e.preventDefault();
           const form = e.target;
