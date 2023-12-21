@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
-    const {signIn, } = useAuth()
+    const {signIn,  signInWithProvider} = useAuth()
+    const navigate = useNavigate()
     const handleLogin = e => {
       e.preventDefault();
           const form = e.target;
@@ -23,6 +24,7 @@ const Login = () => {
                 position: "top-center"
               })
             }
+            navigate("/dashboard")
           })
           .catch(error => {
             console.error(error)
@@ -32,6 +34,21 @@ const Login = () => {
             
           })
           
+    }
+
+    const handleGoogleLogin = () => {
+         signInWithProvider()
+         .then(result => {
+            const user = result.user;
+            console.log(user);
+            if(user){
+                return toast.success('you logged in Successfully.',{
+                  position: "top-center"
+                })
+              }
+            navigate("/dashboard")
+         })
+         .catch(error => console.error(error.message))
     }
       
     return (
@@ -61,15 +78,26 @@ const Login = () => {
         />
        </div>
         <button
-          className="w-full mt-4 py-3 px-4 rounded-full bg-gradient-to-r from-orange-300 to-orange-600 text-white text-center font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="w-full mt-4 py-3 px-4 rounded-full bg-gradient-to-r from-orange-300 to-orange-600 text-white text-center font-semibold text-"
         >
           Login
+        </button>
+      
+      </form>
+      <button 
+         onClick={handleGoogleLogin}
+          className="w-full mt-4 py-1 justify-center flex  border border-gray-600 rounded-full"
+        >
+<div className="flex items-center gap-x-5">
+<h3 className="text-lg font-bold">Continue to </h3>
+        <img className="w-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png" alt="" />
+</div>
+        
         </button>
       
         <p className="mt-4 text-center">
                You have not an account. Please <Link className="text-orange-400 font-bold" to="/register">register</Link> now
         </p>
-      </form>
     </div>
   </div>
         </div>

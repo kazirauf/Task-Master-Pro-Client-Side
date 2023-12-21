@@ -1,6 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
+    const {user, logOut} = useAuth()
+    const handleLogOut = () => {
+        logOut()
+        .then()
+        .catch()
+    }
     // eslint-disable-next-line react/prop-types
     const CustomNavLink = ({ to, children }) => (
         <li className="text-slate-900 text-lg font-bold">
@@ -45,8 +52,22 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <Link to="/login" className="py-2 px-5 text-white bg-orange-500 font-bold rounded">Login</Link>
+    {
+        user?.displayName ?
+        <>
+        <h1 className="font-bold mr-5">{user?.displayName}</h1>
+         <img className="w-10 h-10 rounded-full" src={user?.photoURL} alt="" />
+         <button onClick={handleLogOut} className="py-2 px-5 ml-4 text-white bg-orange-500 font-bold rounded">LogOut</button>
+         
+
+        </>
+        :
+        <>
+        <Link to="/login" className="py-2 px-5 text-white bg-orange-500 font-bold rounded">Login</Link>
     <Link to="/register" className="py-2 px-5 text-white bg-orange-500 font-bold rounded ml-3">Register</Link>
+        </>
+    }
+    
   </div>
 </div>
         </div>

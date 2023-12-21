@@ -4,7 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 
 const Register = () => {
-    const {createUser} = useAuth()
+    const {createUser, signInWithProvider} = useAuth()
     const navigate = useNavigate()
     const handleRegister = e => {
         e.preventDefault();
@@ -56,6 +56,7 @@ const Register = () => {
                     position: "top-center"
                    })
                }
+               navigate("/dashboard")
              
              })
              .catch(error => {
@@ -63,6 +64,22 @@ const Register = () => {
               
              })
        }
+
+       const handleGoogleLogin = () => {
+        signInWithProvider()
+        .then(result => {
+           const user = result.user;
+           console.log(user);
+           if(user){
+            return toast.success('create the user account is Successfully done.',{
+               position: "top-center"
+              })
+          }
+           navigate("/dashboard")
+        })
+        .catch(error => console.error(error.message))
+   }
+     
     return (
         <div>
       <div>
@@ -70,6 +87,16 @@ const Register = () => {
     <div className="bg-white w-96 p-8 rounded-lg shadow-lg py-10">
       <h1 className="text-center text-orange-700 font-semibold text-2xl">Register</h1>
       <form onSubmit={handleRegister} className="mt-6">
+      <div className="py-3">
+          <h1 className="font-bold mb-2 ml-1 text-orange-700">Image</h1>
+       <input
+          className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-full focus:outline-none focus:border-orange-400 focus:bg-white"
+          type="text"
+          name="image"
+          placeholder="your image url"
+          required
+        />
+       </div>
       <div className="py-3">
           <h1 className="font-bold mb-2 ml-1 text-orange-700">Name</h1>
        <input
@@ -106,10 +133,21 @@ const Register = () => {
           Login
         </button>
       
+        
+      </form>
+      <button 
+         onClick={handleGoogleLogin}
+          className="w-full mt-4 py-1 justify-center flex  border border-gray-600 rounded-full"
+        >
+<div className="flex items-center gap-x-5">
+<h3 className="text-lg font-bold">Continue to </h3>
+        <img className="w-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png" alt="" />
+</div>
+        
+        </button>
         <p className="mt-4 text-center">
                You have already an account. Please <Link className="text-orange-400 font-bold" to="/login">Login</Link> now
         </p>
-      </form>
     </div>
   </div>
         </div>
