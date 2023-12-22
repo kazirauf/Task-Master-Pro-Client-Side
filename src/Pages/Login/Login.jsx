@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Login = () => {
     const {signIn,  signInWithProvider} = useAuth()
     const navigate = useNavigate()
+    const axiosPublic = useAxiosPublic()
     const handleLogin = e => {
       e.preventDefault();
           const form = e.target;
@@ -18,13 +20,14 @@ const Login = () => {
           .then(result => {
             const user = result.user;
             console.log(user);
+            navigate("/dashboard")
             form.reset()
             if(user){
               return toast.success('you logged in Successfully.',{
                 position: "top-center"
               })
             }
-            navigate("/dashboard")
+           
           })
           .catch(error => {
             console.error(error)
@@ -40,13 +43,25 @@ const Login = () => {
          signInWithProvider()
          .then(result => {
             const user = result.user;
-            console.log(user);
-            if(user){
-                return toast.success('you logged in Successfully.',{
-                  position: "top-center"
-                })
-              }
+            const usersInfo = {
+              name: user?.displayName,
+              email: user?.email,
+              image: user?.photoURL,
+         
+            }
+            axiosPublic.post('/users', usersInfo)
+            .then(res => {
+               console.log(res.data);
+           })
             navigate("/dashboard")
+            if(user){
+              return toast.success('you logged in Successfully.',{
+                position: "top-center"
+              })
+            }
+         
+            console.log(user);
+          
          })
          .catch(error => console.error(error.message))
     }

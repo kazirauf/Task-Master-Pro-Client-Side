@@ -12,7 +12,7 @@ const Banner = () => {
       <h1 className="mb-5 text-5xl font-bold">Welcome To Task Master Pro</h1>
       {
         user ?
-        <Link className="btn bg-orange-500 font-bold text-white border-0">Let’s Explore</Link>
+        <Link to='/dashboard' className="btn bg-orange-500 font-bold text-white border-0">Let’s Explore</Link>
         :
         <Link to="/login" className="btn bg-orange-500 font-bold text-white border-0">Let’s Explore</Link>
       }
